@@ -24,8 +24,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         mainView.layer.cornerRadius = 20
-        setupSliders()
-        setupLabels()
+        
+        changeViewColor()
+        
+        setupValue(for: firstValueLabel, secondValueLabel, thirdValueLabel)
         
     }
     
@@ -33,30 +35,37 @@ class ViewController: UIViewController {
     
     @IBAction func rgbSliderChanged(_ sender: UISlider) {
         changeViewColor()
-        firstValueLabel.text = firstSlider.value.formatted()
-        secondValueLabel.text = secondSlider.value.formatted()
-        thirdValueLabel.text = thirdSlider.value.formatted()
+        
+        switch sender {
+        case firstSlider:
+            firstValueLabel.text = string(from: firstSlider)
+        case secondSlider:
+            secondValueLabel.text = string(from:  secondSlider)
+        default:
+            thirdValueLabel.text = string(from: thirdSlider)
+        }
     }
     
 //MARK: - Methods
-    func changeViewColor() {
+    private func changeViewColor() {
         mainView.backgroundColor = UIColor(red: CGFloat(firstSlider.value), green: CGFloat(secondSlider.value), blue: CGFloat(thirdSlider.value), alpha: 1)
     }
     
-    private func setupSliders() {
-        firstSlider.minimumValue = 0
-        secondSlider.minimumValue = 0
-        thirdSlider.minimumValue = 0
-        firstSlider.maximumValue = 1
-        secondSlider.maximumValue = 1
-        thirdSlider.maximumValue = 1
+    private func  setupValue(for labels: UILabel...) {
+        labels.forEach { label in
+            switch label {
+            case firstValueLabel:
+                firstValueLabel.text = string(from: firstSlider)
+            case secondValueLabel:
+               secondValueLabel.text = string(from: secondSlider)
+            default:
+                thirdValueLabel.text = string(from: thirdSlider)
+            }
+        }
     }
-    private func setupLabels() {
-        firstValueLabel.text = firstSlider.value.formatted()
-        secondValueLabel.text = secondSlider.value.formatted()
-        thirdValueLabel.text = thirdSlider.value.formatted()
+    
+    private func string(from slider: UISlider) -> String {
+        String(format: "%.2f", slider.value)
     }
-
-
 }
 
